@@ -1,10 +1,18 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import TodoInput from "./components/ToDoInput";
 import TodoItem from "./components/ToDoItem";
 import "./App.css";
 
 function App() {
-    const [todos, setTodos] = useState([]);
+    // Lấy dữ liệu từ localStorage khi app load
+    const [todos, setTodos] = useState(() => {
+        const savedTodos = localStorage.getItem("todos");
+        return savedTodos ? JSON.parse(savedTodos) : [];
+    });
+    // Mỗi khi todos thay đổi → lưu lại localStorage
+    useEffect(() => {
+        localStorage.setItem("todos", JSON.stringify(todos));
+    }, [todos]);
 
     const addTodo = (text) => {
         if (text.trim() !== "") {
@@ -26,7 +34,7 @@ function App() {
 
     return (
         <div className="app">
-            <h1>📝 Todo List</h1>
+            <h1 className="text-3xl font-bold text-blue-500">📝 Todo List</h1>
             <TodoInput onAdd={addTodo} />
             <ul>
                 {todos.map((todo) => (

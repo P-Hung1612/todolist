@@ -1,37 +1,102 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #89f7fe, #66a6ff);
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
 .app {
-  max-width: 400px;
-  margin: 50px auto;
-  background: #f9f9f9;
-  padding: 20px;
+  background: white;
+  width: 400px;
+  margin-top: 80px;
+  padding: 20px 25px;
   border-radius: 16px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
 }
 
 h1 {
   text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
 }
 
 .todo-input {
   display: flex;
   gap: 10px;
+  margin-bottom: 20px;
 }
 
 .todo-input input {
   flex: 1;
-  padding: 8px;
+  padding: 10px;
+  border: 2px solid #ddd;
+  border-radius: 10px;
+  transition: border-color 0.2s ease;
 }
 
-li {
+.todo-input input:focus {
+  border-color: #66a6ff;
+  outline: none;
+}
+
+.todo-input button {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 10px;
+  background-color: #66a6ff;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.todo-input button:hover {
+  background-color: #5590e2;
+  transform: translateY(-1px);
+}
+
+.todo-item {
   display: flex;
   justify-content: space-between;
-  margin: 8px 0;
-  background: #fff;
-  padding: 8px;
-  border-radius: 8px;
-  cursor: pointer;
+  align-items: center;
+  background: #f5f5f5;
+  margin-bottom: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  transition: all 0.2s ease;
 }
 
-li.done span {
+.todo-item:hover {
+  background: #e6f0ff;
+}
+
+.todo-item.done {
   text-decoration: line-through;
-  color: gray;
+  opacity: 0.6;
+}
+
+.todo-item button {
+  border: none;
+  background: transparent;
+  color: #ff5f5f;
+  cursor: pointer;
+  font-weight: bold;
+  transition: transform 0.2s;
+}
+
+.todo-item button:hover {
+  transform: scale(1.1);
 }
