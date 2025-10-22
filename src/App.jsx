@@ -1,48 +1,53 @@
-import { useState, useEffect } from "react";
+import axios from "axios";
+import { useEffect, useState } from "react";
 import TodoInput from "./components/ToDoInput";
 import TodoItem from "./components/ToDoItem";
+import TodoFilter from "./components/ToDoFilter";
 import "./App.css";
 
-function App() {
-    // Lấy dữ liệu từ localStorage khi app load
-    const [todos, setTodos] = useState(() => {
-        const savedTodos = localStorage.getItem("todos");
-        return savedTodos ? JSON.parse(savedTodos) : [];
-    });
-    // Mỗi khi todos thay đổi → lưu lại localStorage
-    useEffect(() => {
-        localStorage.setItem("todos", JSON.stringify(todos));
-    }, [todos]);
+const API_URL = "/api/todos";
 
-    const addTodo = (text) => {
-        if (text.trim() !== "") {
-            setTodos([...todos, { id: Date.now(), text, done: false }]);
-        }
+function App() {
+    const [todos, setTodos] = useState([]);
+
+    useEffect(() => {
+        axios.get(API_URL).then((res) => setTodos(res.data));
+    }, []);
+
+    const addTodo = async (text) => {
+        const res = await axios.post(API_URL, { text });
+        setTodos((prev) => [res.data, ...prev]);
     };
 
-    const toggleTodo = (id) => {
-        setTodos(
-            todos.map((todo) =>
-                todo.id === id ? { ...todo, done: !todo.done } : todo
-            )
+    const toggleTodo = async (id, done) => {
+        const res = await axios.patch(`${API_URL}/${id}`, { done: !done });
+        setTodos((prev) =>
+            prev.map((t) => (t._id === id ? res.data : t))
         );
     };
 
-    const deleteTodo = (id) => {
-        setTodos(todos.filter((todo) => todo.id !== id));
+    const updateTodo = async (id, updates) => {
+        const res = await axios.patch(`${API_URL}/${id}`, updates);
+        setTodos((prev) => prev.map((t) => (t._id === id ? res.data : t)));
+    };
+
+    const deleteTodo = async (id) => {
+        await axios.delete(`${API_URL}/${id}`);
+        setTodos((prev) => prev.filter((t) => t._id !== id));
     };
 
     return (
         <div className="app">
-            <h1 className="text-3xl font-bold text-blue-500">📝 Todo List</h1>
+            <h1>📝 Todo List</h1>
             <TodoInput onAdd={addTodo} />
             <ul>
                 {todos.map((todo) => (
                     <TodoItem
-                        key={todo.id}
+                        key={todo._id}
                         todo={todo}
-                        onToggle={toggleTodo}
-                        onDelete={deleteTodo}
+                        onToggle={() => toggleTodo(todo._id, todo.done)}
+                        onDelete={() => deleteTodo(todo._id)}
+                        onUpdate={(id, updates) => updateTodo(id, updates)}
                     />
                 ))}
             </ul>
