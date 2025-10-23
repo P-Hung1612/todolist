@@ -1,56 +1,90 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState, useEffect, useRef } from "react";
+import { Toaster } from "react-hot-toast";
 import TodoInput from "./components/ToDoInput";
 import TodoItem from "./components/ToDoItem";
 import TodoFilter from "./components/ToDoFilter";
+import { useTodoStore } from "./store/useTodoStore";
+import { io } from "socket.io-client";
+import { useAuthStore } from "./store/useAuthStore";
+import AuthForm from "./components/AuthForm";
 import "./App.css";
 
-const API_URL = "/api/todos";
-
 function App() {
-    const [todos, setTodos] = useState([]);
+    const { user, logout } = useAuthStore();
+    const [dark, setDark] = useState(false);
+    const socketRef = useRef(null);
+
+    const {
+        todos,
+        filteredTodos,
+        fetchTodos,
+        addTodo,
+        toggleTodo,
+        deleteTodo,
+        updateTodo,
+        filter,
+        setFilter,
+        search,
+        setSearch,
+        loading,
+    } = useTodoStore();
 
     useEffect(() => {
-        axios.get(API_URL).then((res) => setTodos(res.data));
-    }, []);
+        if (user) fetchTodos();
+    }, [user, fetchTodos]);
 
-    const addTodo = async (text) => {
-        const res = await axios.post(API_URL, { text });
-        setTodos((prev) => [res.data, ...prev]);
-    };
-
-    const toggleTodo = async (id, done) => {
-        const res = await axios.patch(`${API_URL}/${id}`, { done: !done });
-        setTodos((prev) =>
-            prev.map((t) => (t._id === id ? res.data : t))
-        );
-    };
-
-    const updateTodo = async (id, updates) => {
-        const res = await axios.patch(`${API_URL}/${id}`, updates);
-        setTodos((prev) => prev.map((t) => (t._id === id ? res.data : t)));
-    };
-
-    const deleteTodo = async (id) => {
-        await axios.delete(`${API_URL}/${id}`);
-        setTodos((prev) => prev.filter((t) => t._id !== id));
-    };
+    if (!user) return <AuthForm />;
 
     return (
-        <div className="app">
-            <h1>📝 Todo List</h1>
+        <div className={dark ? "app dark" : "app"}>
+            <Toaster position="top-center" />
+            <div className="flex items-center justify-between mb-4">
+                <h1 className="text-3xl font-bold text-blue-500 mb-4 text-center">📝 Todo List</h1>
+                <button onClick={logout} className="text-sm text-red-500 hover:underline">
+                    Đăng xuất
+                </button>
+                <button
+                    className="mb-[20px] ml-3 px-3 py-1 text-sm font-medium rounded-lg 
+               bg-blue-100 hover:bg-blue-200 
+               text-blue-600 transition-all"
+                    onClick={() => setDark(!dark)}
+                >
+                    {dark ? "☀️ Sáng" : "🌙 Tối"}
+                </button>
+            </div>
+
+
             <TodoInput onAdd={addTodo} />
-            <ul>
-                {todos.map((todo) => (
-                    <TodoItem
-                        key={todo._id}
-                        todo={todo}
-                        onToggle={() => toggleTodo(todo._id, todo.done)}
-                        onDelete={() => deleteTodo(todo._id)}
-                        onUpdate={(id, updates) => updateTodo(id, updates)}
-                    />
-                ))}
+            <TodoFilter
+                filter={filter}
+                setFilter={setFilter}
+                search={search}
+                setSearch={setSearch}
+            />
+
+            {loading && <p className="text-gray-400 italic text-center">Đang tải dữ liệu...</p>}
+
+            <ul className="overflow-y-auto max-h-[400px]">
+                {filteredTodos().length === 0 ? (
+                    <p className="text-gray-500 italic text-center mt-4">
+                        Không có công việc nào 🎉
+                    </p>
+                ) : (
+                    filteredTodos().map((todo) => (
+                        <TodoItem
+                            key={todo._id}
+                            todo={todo}
+                            onToggle={() => toggleTodo(todo._id, todo.done)}
+                            onDelete={() => deleteTodo(todo._id)}
+                            onUpdate={updateTodo}
+                        />
+                    ))
+                )}
             </ul>
+
+            <div className="text-sm text-gray-500 mt-4 text-center">
+                Tổng: {todos.length} | Hoàn thành: {todos.filter((t) => t.done).length}
+            </div>
         </div>
     );
 }

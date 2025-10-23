@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { motion } from "framer-motion";
 
 function TodoItem({ todo, onToggle, onDelete, onUpdate }) {
   const [editing, setEditing] = useState(false);
@@ -12,7 +13,11 @@ function TodoItem({ todo, onToggle, onDelete, onUpdate }) {
   };
 
   return (
-    <li
+    <motion.li layout
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -10 }}
+      transition={{ duration: 0.5 }}
       className={`flex flex-col sm:flex-row sm:items-center justify-between p-3 mb-2 rounded-lg cursor-pointer transition-all duration-300 ${todo.done
         ? "bg-green-100 line-through text-gray-500"
         : "bg-gray-50 hover:bg-blue-50"
@@ -96,7 +101,7 @@ function TodoItem({ todo, onToggle, onDelete, onUpdate }) {
           </div>
         </div>
       )}
-    </li>
+    </motion.li>
   );
 }
 

@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ==============================
+   🌤️ Mặc định (Light mode)
+============================== */
 body {
   font-family: 'Poppins', sans-serif;
   background: linear-gradient(135deg, #89f7fe, #66a6ff);
@@ -11,21 +14,20 @@ body {
   display: flex;
   justify-content: center;
   align-items: flex-start;
+  transition: background-color 0.4s ease, color 0.4s ease;
 }
 
 .app {
   background: white;
   width: 100%;
   max-width: 400px;
-  /* vẫn giới hạn 400px ở màn to */
   margin-top: 80px;
   padding: 20px 25px;
   border-radius: 16px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
   box-sizing: border-box;
-  /* đảm bảo padding không làm tăng width thực tế */
+  transition: background-color 0.4s ease, color 0.4s ease;
 }
-
 
 h1 {
   text-align: center;
@@ -38,6 +40,9 @@ ul {
   padding: 0;
 }
 
+/* ==============================
+   ✏️ Ô nhập công việc
+============================== */
 .todo-input {
   display: flex;
   gap: 10px;
@@ -73,6 +78,9 @@ ul {
   transform: translateY(-1px);
 }
 
+/* ==============================
+   ✅ Item công việc
+============================== */
 .todo-item {
   display: flex;
   justify-content: space-between;
@@ -108,7 +116,9 @@ ul {
   transform: scale(1.1);
 }
 
-/* Bộ lọc & tìm kiếm */
+/* ==============================
+   🔍 Bộ lọc & tìm kiếm
+============================== */
 .todo-filter input {
   border: 1px solid #ddd;
   border-radius: 10px;
@@ -118,4 +128,68 @@ ul {
 
 .todo-filter input:focus {
   border-color: #66a6ff;
+}
+
+/* ==============================
+   🌙 Dark Mode (class="dark")
+============================== */
+.dark {
+  background-color: #0f172a;
+  /* slate-900 */
+  color: #f8fafc;
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+/* Gradient nền body khi dark mode bật */
+.dark body {
+  background: linear-gradient(135deg, #1e293b, #0f172a);
+}
+
+.dark .app {
+  background: #1e293b;
+  /* slate-800 */
+  color: #f8fafc;
+  box-shadow: 0 10px 25px rgba(255, 255, 255, 0.05);
+}
+
+.dark .todo-item {
+  background-color: #334155;
+  /* slate-700 */
+  color: #f1f5f9;
+}
+
+.dark .todo-item:hover {
+  background-color: #475569;
+  /* slate-600 */
+}
+
+.dark .todo-input input {
+  background-color: #1e293b;
+  border-color: #475569;
+  color: #f8fafc;
+}
+
+.dark .todo-input input:focus {
+  border-color: #60a5fa;
+  /* blue-400 */
+}
+
+.dark .todo-input button {
+  background-color: #3b82f6;
+  /* blue-500 */
+}
+
+.dark .todo-input button:hover {
+  background-color: #2563eb;
+  /* blue-600 */
+}
+
+.dark .todo-filter input {
+  background-color: #1e293b;
+  border-color: #475569;
+  color: #f8fafc;
+}
+
+.dark .todo-filter input:focus {
+  border-color: #60a5fa;
 }

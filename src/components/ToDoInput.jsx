@@ -17,6 +17,7 @@ function TodoInput({ onAdd }) {
                 value={text}
                 onChange={(e) => setText(e.target.value)}
                 className="transition-all focus:ring-2 focus:ring-blue-400"
+                autoFocus
             />
             <button
                 type="submit"
