@@ -6,7 +6,7 @@ import { useAuthStore } from "./useAuthStore";
 
 const API_URL = process.env.REACT_APP_API_URL + "api/todos";
 const socket = io(
-    process.env.REACT_APP_API_URL || "http://localhost:5001",
+    process.env.REACT_APP_API_URL,
     { autoConnect: true }
 );
 
