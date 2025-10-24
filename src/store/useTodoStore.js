@@ -4,11 +4,12 @@ import { toast } from "react-hot-toast";
 import { io } from "socket.io-client";
 import { useAuthStore } from "./useAuthStore";
 
-const API_URL = process.env.REACT_APP_API_URL + "api/todos";
-const socket = io(
-    process.env.REACT_APP_API_URL || "https://todolist-server-xtx5.onrender.com",
-    { autoConnect: true }
-);
+const BASE_URL =
+    process.env.REACT_APP_API_URL || "https://todolist-server-xtx5.onrender.com";
+
+const API_URL = BASE_URL + "/api/todos";
+const socket = io(BASE_URL, { autoConnect: true });
+
 socket.on("connect_error", (err) => {
     console.error("❌ Socket connect error:", err.message);
 });

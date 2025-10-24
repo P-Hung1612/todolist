@@ -14,9 +14,10 @@ axios.interceptors.request.use(
     (error) => Promise.reject(error)
 );
 
+const BASE_URL =
+    process.env.REACT_APP_API_URL || "https://todolist-server-xtx5.onrender.com";
 
-const API_URL =
-    (process.env.REACT_APP_API_URL || "https://todolist-server-xtx5.onrender.com") + "/api/auth";
+const API_URL = BASE_URL + "/api/auth";
 
 export const useAuthStore = create((set) => ({
     user: JSON.parse(localStorage.getItem("user")) || null,
