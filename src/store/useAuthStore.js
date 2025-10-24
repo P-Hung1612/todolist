@@ -15,7 +15,7 @@ axios.interceptors.request.use(
 );
 
 
-const API_URL = "http://localhost:5001/api/auth";
+const API_URL = process.env.REACT_APP_API_URL + "/auth";
 
 export const useAuthStore = create((set) => ({
     user: JSON.parse(localStorage.getItem("user")) || null,
@@ -48,7 +48,7 @@ export const useAuthStore = create((set) => ({
         localStorage.removeItem("token");
         toast("👋 Đã đăng xuất");
     },
-    
+
     checkAuth: async () => {
         const token = localStorage.getItem("token");
         if (!token) return set({ user: null, token: null });

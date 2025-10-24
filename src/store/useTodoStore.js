@@ -4,7 +4,7 @@ import { toast } from "react-hot-toast";
 import { io } from "socket.io-client";
 import { useAuthStore } from "./useAuthStore";
 
-const API_URL = "http://localhost:5001/api/todos";
+const API_URL = process.env.REACT_APP_API_URL + "/todos";
 const socket = io("http://localhost:5001", {
     autoConnect: true,
 });
