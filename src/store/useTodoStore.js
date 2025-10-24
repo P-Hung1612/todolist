@@ -6,9 +6,13 @@ import { useAuthStore } from "./useAuthStore";
 
 const API_URL = process.env.REACT_APP_API_URL + "api/todos";
 const socket = io(
-    process.env.REACT_APP_API_URL,
+    process.env.REACT_APP_API_URL || "https://todolist-server-xtx5.onrender.com",
     { autoConnect: true }
 );
+socket.on("connect_error", (err) => {
+    console.error("❌ Socket connect error:", err.message);
+});
+
 
 export const useTodoStore = create((set, get) => ({
     todos: [],
