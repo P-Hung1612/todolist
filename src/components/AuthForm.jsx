@@ -9,6 +9,7 @@ function AuthForm() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        console.log("Form submitted:", username, password, isLogin);
         isLogin ? login(username, password) : register(username, password);
     };
 
@@ -29,7 +30,7 @@ function AuthForm() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                 />
-                <button className="bg-blue-500 text-white rounded py-2 hover:bg-blue-600">
+                <button type="submit" className="bg-blue-500 text-white rounded py-2 hover:bg-blue-600">
                     {isLogin ? "Đăng nhập" : "Đăng ký"}
                 </button>
             </form>

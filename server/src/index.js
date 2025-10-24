@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import http from "http";
 import { Server } from "socket.io";
 import todoRoutes from "./routes/todo.js";
+import authRoutes from "./routes/authRoutes.js";
 
 dotenv.config();
 
@@ -12,6 +13,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use("/api/todos", todoRoutes);
+app.use("/api/auth", authRoutes);
 
 // ✅ Tạo server HTTP (Socket.io yêu cầu)
 const server = http.createServer(app);
