@@ -15,7 +15,7 @@ axios.interceptors.request.use(
 );
 
 
-const API_URL = process.env.REACT_APP_API_URL + "/auth";
+const API_URL = process.env.REACT_APP_API_URL + "api/auth";
 
 export const useAuthStore = create((set) => ({
     user: JSON.parse(localStorage.getItem("user")) || null,

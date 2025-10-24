@@ -4,10 +4,11 @@ import { toast } from "react-hot-toast";
 import { io } from "socket.io-client";
 import { useAuthStore } from "./useAuthStore";
 
-const API_URL = process.env.REACT_APP_API_URL + "/todos";
-const socket = io("http://localhost:5001", {
-    autoConnect: true,
-});
+const API_URL = process.env.REACT_APP_API_URL + "api/todos";
+const socket = io(
+    process.env.REACT_APP_BACKEND_URL || "http://localhost:5001",
+    { autoConnect: true }
+);
 
 export const useTodoStore = create((set, get) => ({
     todos: [],
